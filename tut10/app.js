@@ -18,11 +18,14 @@ app.get('/', (req, res) => {
 // Route to trigger Python script and generate the output file
 app.get('/generate', (req, res) => {
     let options = {
-        scriptPath: __dirname,
-        args: ['Input-1.xlsx', 'Generated_Output.xlsx']
+      scriptPath: __dirname,
+      args: [
+        "Input-1 Lab 10.xlsx",
+        "Output-1.xlsx",
+      ],
     };
     // console.log("Hello!!");
-    PythonShell.run('assignment.py', options, (err) => {
+    PythonShell.run('tut10.py', options, (err) => {
         if (err) {
             console.error("Error running Python script:", err);
             return res.render('index', { message: "An error occurred while generating the output." });
@@ -36,8 +39,8 @@ app.get('/generate', (req, res) => {
 
 // Route to download the output file
 app.get('/download', (req, res) => {
-    const filePath = path.join(__dirname, 'Generated_Output.xlsx');
-    res.download(filePath, 'Generated_Output.xlsx', (err) => {
+    const filePath = path.join(__dirname, 'Output-1.xlsx');
+    res.download(filePath, 'Output-1.xlsx', (err) => {
         if (err) {
             console.error("Error downloading file:", err);
         }
