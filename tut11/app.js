@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const multer = require("multer");
+
 const { PythonShell } = require('python-shell');
 const app = express();
 const PORT = 3000;
@@ -13,17 +13,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-// Set up multer for file upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');  // Store uploaded files in the 'uploads' directory
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);  // Keep the original filename
-  },
-});
-const upload = multer({ storage: storage });
-
 
 // Home route - display the button
 app.get('/', (req, res) => {
@@ -31,15 +20,10 @@ app.get('/', (req, res) => {
 });
 
 // Route to trigger Python script and generate the output file
-app.post('/generate', (req, res) => {
-
-    if (!req.file) {
-      return res.render("index", { message: "Please upload a file." });
-    }
-
+app.get('/generate', (req, res) => {
     let options = {
       scriptPath: __dirname,
-      args: [req.file.path, "demo1.xlsx"], // Use the uploaded file path as input to Python
+      args: ["input lab11.xlsx", "demo1.xlsx"], // Use the uploaded file path as input to Python
     };
     // console.log("Hello!!");
     PythonShell.run('tut11.py', options, (err) => {
